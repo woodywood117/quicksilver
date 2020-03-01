@@ -57,11 +57,6 @@ pub fn run_with<T: State, F: FnOnce()->Result<T>>(title: &str, size: Vector, set
 #[cfg(not(target_arch = "wasm32"))]
 fn run_impl<T: State, F: FnOnce()->Result<T>>(title: &str, size: Vector, settings: Settings,
                                               f: F) -> Result<()> {
-    // A workaround for https://github.com/koute/cargo-web/issues/112
-    if let Err(_) = set_current_dir("static") {
-        eprintln!("Warning: no asset directory found. Please place all your assets inside a directory called 'static' so they can be loaded");
-        eprintln!("Execution continuing, but any asset-not-found errors are likely due to the lack of a 'static' directory.")
-    }
     let (window, events_loop) = Window::build(title, size, settings)?;
     let mut events = EventProvider::new(events_loop);
     #[cfg(feature = "sounds")]
